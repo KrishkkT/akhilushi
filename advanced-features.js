@@ -1,9 +1,45 @@
 // Advanced features for the romantic website
 
-// Enhanced mouse trail with different shapes
+// Enhanced mouse trail with romantic elements
 let mouseX = 0;
 let mouseY = 0;
 let trail = [];
+
+// Romantic heart trail based on mouse movement
+function createRomanticTrail() {
+    if (Math.random() > 0.3) { // Reduce frequency to prevent overload
+        const trailElement = document.createElement('div');
+        const romanticSymbols = ['❤️', '💕', '💖', '💘', '💝', '💗', '💓', '💞', '💟', '❣️', '🥰', '😍', '😘', '💋'];
+        trailElement.innerHTML = romanticSymbols[Math.floor(Math.random() * romanticSymbols.length)];
+        trailElement.style.position = 'fixed';
+        trailElement.style.left = `${mouseX}px`;
+        trailElement.style.top = `${mouseY}px`;
+        trailElement.style.fontSize = `${Math.random() * 20 + 10}px`;
+        trailElement.style.pointerEvents = 'none';
+        trailElement.style.zIndex = '9999';
+        trailElement.style.userSelect = 'none';
+        trailElement.style.transition = 'all 1.5s ease-out';
+        trailElement.style.opacity = '1';
+        
+        document.body.appendChild(trailElement);
+        
+        // Animate the trail element
+        setTimeout(() => {
+            trailElement.style.opacity = '0';
+            trailElement.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(${Math.random() * 360}deg)`;
+        }, 10);
+        
+        // Remove after animation
+        setTimeout(() => {
+            if (trailElement.parentNode) {
+                trailElement.parentNode.removeChild(trailElement);
+            }
+        }, 1600);
+    }
+}
+
+// Start romantic trail
+setInterval(createRomanticTrail, 100);
 
 // Track mouse position
 document.addEventListener('mousemove', (e) => {
@@ -122,7 +158,111 @@ document.addEventListener('keydown', (e) => {
             window.typeSequence = window.typeSequence.slice(-4); // Keep last 4 chars
         }
     }
+    
+    // Additional romantic keyboard interactions
+    if (e.key === ' ') {
+        // Spacebar creates romantic effect
+        createRomanticKeypressEffect();
+    }
+    
+    if (e.key === 'Enter') {
+        // Enter key creates heart explosion
+        createHeartExplosion();
+    }
+    
+    if (e.key === 'ArrowRight') {
+        // Arrow keys create romantic trail
+        createRomanticTrail();
+    }
+    
+    if (e.key === 'ArrowLeft') {
+        createRomanticTrail();
+    }
+    
+    if (e.key === 'ArrowUp') {
+        createRomanticTrail();
+    }
+    
+    if (e.key === 'ArrowDown') {
+        createRomanticTrail();
+    }
 });
+
+// Create romantic effect on spacebar press
+function createRomanticKeypressEffect() {
+    const romanticWords = ['Love', 'Adore', 'Cherish', 'Treasure', 'Admire', 'Appreciate', 'Value', 'Worship', 'Adoration', 'Devotion'];
+    const word = romanticWords[Math.floor(Math.random() * romanticWords.length)];
+    
+    const effect = document.createElement('div');
+    effect.textContent = word;
+    effect.style.position = 'fixed';
+    effect.style.left = `${Math.random() * 100}%`;
+    effect.style.top = `${Math.random() * 100}%`;
+    effect.style.fontSize = `${Math.random() * 20 + 20}px`;
+    effect.style.fontWeight = 'bold';
+    effect.style.color = '#ff6b9d';
+    effect.style.zIndex = '9999';
+    effect.style.pointerEvents = 'none';
+    effect.style.animation = 'float 3s ease-in-out forwards';
+    effect.style.opacity = '0';
+    
+    document.body.appendChild(effect);
+    
+    // Fade in and animate
+    setTimeout(() => {
+        effect.style.opacity = '1';
+    }, 10);
+    
+    // Remove after animation
+    setTimeout(() => {
+        if (effect.parentNode) {
+            effect.parentNode.removeChild(effect);
+        }
+    }, 3000);
+}
+
+// Create heart explosion on Enter key
+function createHeartExplosion() {
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            createHeartExplosionPiece();
+        }, i * 50);
+    }
+}
+
+// Create a single piece for heart explosion
+function createHeartExplosionPiece() {
+    const heart = document.createElement('div');
+    heart.innerHTML = '❤️';
+    heart.style.position = 'fixed';
+    heart.style.left = '50%';
+    heart.style.top = '50%';
+    heart.style.fontSize = `${Math.random() * 30 + 20}px`;
+    heart.style.zIndex = '9998';
+    heart.style.pointerEvents = 'none';
+    heart.style.transition = 'all 1.5s ease-out';
+    heart.style.opacity = '1';
+    
+    document.body.appendChild(heart);
+    
+    // Animate the heart
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 200 + 100;
+    const endX = Math.cos(angle) * distance;
+    const endY = Math.sin(angle) * distance;
+    
+    setTimeout(() => {
+        heart.style.transform = `translate(${endX}px, ${endY}px) rotate(${Math.random() * 360}deg)`;
+        heart.style.opacity = '0';
+    }, 10);
+    
+    // Remove after animation
+    setTimeout(() => {
+        if (heart.parentNode) {
+            heart.parentNode.removeChild(heart);
+        }
+    }, 1500);
+}
 
 // Create confetti effect
 function createConfetti() {

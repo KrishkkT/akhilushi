@@ -28,6 +28,8 @@
     <!-- Landing Page -->
     <section id="landing" class="section landing">
         <div class="container">
+            <!-- Floating Hearts Background -->
+            <div class="floating-hearts" id="floatingHearts"></div>
             <div class="hearts-container" id="heartsContainer"></div>
             <div class="text-content">
                 <h1 class="main-title">Hi Love ❤️</h1>
@@ -41,7 +43,7 @@
         <div class="music-player">
             <button id="musicToggle" class="music-btn">🎵</button>
             <audio id="backgroundMusic" loop>
-                <source src="public/music/background.mp3" type="audio/mpeg">
+                <source src="public/music/starboy.mp3" type="audio/mpeg">
             </audio>
         </div>
     </section>
@@ -56,7 +58,7 @@
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
                                 <h3>🫶 The First Message</h3>
-                                <img src="public/photos/bg1.png" alt="First Message">
+                                <img src="public/photos/first_message.jpeg" alt="First Message">
                             </div>
                             <div class="flip-card-back">
                                 <p>I still have that first message saved... 😊</p>
@@ -69,11 +71,47 @@
                     <div class="card flip-card">
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
-                                <h3>☕ First Meet</h3>
-                                <img src="public/photos/bg2.jpg" alt="First Meet">
+                                <h3> 🎥 Best Moments</h3>
+                                <video id="bestMomentVideo" class="video-best-moment" poster="public/photos/best_moment_poster.jpg" preload="auto" autoplay muted loop playsinline>
+                                    <source src="public/videos/best_moments.mp4" type="video/mp4">
+                                    <p>Best Moments Video</p>
+                                    Your browser does not support the video tag.
+                                </video>
                             </div>
                             <div class="flip-card-back">
-                                <p>The moment I knew I was in trouble... ❤️</p>
+                                <p>Our first unofficial date and one of the best moment I knew ❤️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="card flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>📸 Our First Pic</h3>
+                                <img src="public/photos/first_pic.jpeg" alt="Our First Pic">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>The most beautiful pic ever I have seen for the first time 😘😊</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="card video-card">
+                        <div class="video-card-inner">
+                            <div class="video-card-front">
+                                <h3>🎥 Your Amazing Reel</h3>
+                                <video id="reelVideo" class="video-preview" poster="public/photos/reel_poster.jpg" preload="auto" autoplay muted loop playsinline>
+                                    <source src="public/videos/reel.mp4" type="video/mp4">
+                                    <p>Your Amazing Reel Video</p>
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div class="video-card-back">
+                                <p>It means the world ❤️</p>
                             </div>
                         </div>
                     </div>
@@ -84,24 +122,10 @@
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
                                 <h3>😂 Our Funniest Moment</h3>
-                                <img src="public/photos/bg3.jpg" alt="Funny Moment">
+                                <img src="public/photos/ur_funniest_pic.jpeg" alt="Our Funniest Moment">
                             </div>
                             <div class="flip-card-back">
-                                <p>We laughed until our stomachs hurt... 😭❤️</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="card flip-card">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <h3>💞 The Moment I Knew</h3>
-                                <img src="public/photos/bg4.jpg" alt="Magic Moment">
-                            </div>
-                            <div class="flip-card-back">
-                                <p>This is when I realized I'm never winning arguments again 😭❤️</p>
+                                <p>My most favourite random pic ever 🫠</p>
                             </div>
                         </div>
                     </div>
@@ -116,27 +140,27 @@
             <h2>Memory Gallery 📸</h2>
             <div class="gallery-grid">
                 <div class="polaroid">
-                    <img src="public/photos/bg5.jpg" alt="Memory" data-caption="You don't know this, but I stared at this photo for 10 minutes.">
+                    <img src="public/photos/fav_smile.jpeg" alt="Memory" data-caption="You don't know this, but I stared at this photo for 10 minutes.">
                     <p class="caption">My favorite smile</p>
                 </div>
                 <div class="polaroid">
-                    <img src="public/photos/bg6.jpg" alt="Memory" data-caption="This is when I knew you were special.">
+                    <img src="public/photos/angels_exist.jpeg" alt="Memory" data-caption="This is when I knew you were special.">
                     <p class="caption">Proof that angels exist</p>
                 </div>
                 <div class="polaroid">
-                    <img src="public/photos/bg7.jpg" alt="Memory" data-caption="I could look at this forever.">
+                    <img src="public/photos/cute.jpeg" alt="Memory" data-caption="I could look at this forever.">
                     <p class="caption">How can one person be this cute??</p>
                 </div>
                 <div class="polaroid">
-                    <img src="public/photos/bg8.jpg" alt="Memory" data-caption="This is when I fell for you a little more.">
+                    <img src="public/photos/stared.jpeg" alt="Memory" data-caption="This is when I fell for you a little more.">
                     <p class="caption">You don't know this, but I stared at this photo for 10 minutes</p>
                 </div>
                 <div class="polaroid">
-                    <img src="public/photos/bg9.jpg" alt="Memory" data-caption="Your smile brightens my world.">
+                    <img src="public/photos/happiness.jpeg" alt="Memory" data-caption="Your smile brightens my world.">
                     <p class="caption">Pure happiness</p>
                 </div>
                 <div class="polaroid">
-                    <img src="public/photos/bg10.jpg" alt="Memory" data-caption="Moments like these make life beautiful.">
+                    <img src="public/photos/best_moment.jpeg" alt="Memory" data-caption="Moments like these make life beautiful.">
                     <p class="caption">Perfect moments</p>
                 </div>
             </div>
@@ -227,7 +251,7 @@
             <div id="finalMessage" class="final-message hidden">
                 <p>No website can show how much I love you...</p>
                 <p>but I tried.</p>
-                <h2 id="herName">Your Name Here</h2>
+                <h2 id="herName">Aayushi</h2>
                 <p>Thank you for being mine.</p>
             </div>
         </div>
@@ -256,6 +280,20 @@
             <span class="close-lightbox">&times;</span>
             <img id="lightbox-img" src="public/photos/bg11.jpg" alt="Enlarged photo">
             <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Hint Panel -->
+    <div id="keyboardHint" class="keyboard-hint">
+        <div class="hint-content">
+            <h3>Secret Keys ❤️</h3>
+            <p>Press <kbd>Space</kbd> for romantic words</p>
+            <p>Press <kbd>Enter</kbd> for heart explosions</p>
+            <p>Press <kbd>Arrows</kbd> for romantic trails</p>
+            <p>Press <kbd>L</kbd> for love confessions</p>
+            <p>Press <kbd>M</kbd> to toggle music</p>
+            <p>Click videos to play/pause</p>
+            <button id="closeHint" class="close-hint-btn">Got it ❤️</button>
         </div>
     </div>
 

@@ -64,7 +64,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #fff5f5, #f5f0ff);
+    background: linear-gradient(135deg, #fff5f5, #f5f0ff, #fdf2f8, #fef3f9);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
     color: #5a4a63;
@@ -72,6 +72,8 @@ body {
     min-height: 100vh;
     position: relative;
     transition: background 2s ease;
+    /* Add romantic floating elements */
+    background-attachment: fixed;
 }
 
 /* === Animations === */
@@ -147,6 +149,94 @@ body {
     position: relative;
     text-align: center;
     border-radius: 0 0 50% 50% / 0 0 30px 30px;
+    overflow: hidden;
+}
+
+/* Floating Hearts Animation */
+.floating-hearts {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: floatHeart linear infinite;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Enhanced Text Content */
+.text-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 107, 157, 0.2);
+    box-shadow: 0 8px 32px rgba(255, 107, 157, 0.1);
+    animation: vignetteGlow 4s ease-in-out infinite;
+}
+
+/* Enhanced button styles */
+.cta-button {
+    background: linear-gradient(45deg, #ff6b9d, #ff8fb1, #ff6b9d);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    position: relative;
+    overflow: hidden;
+    font-weight: 600;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: 0.5s;
+}
+
+.cta-button:hover::before {
+    left: 100%;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.5);
+    background: linear-gradient(45deg, #ff8fb1, #ff6b9d, #ff8fb1);
 }
 
 .hearts-container {
@@ -246,7 +336,7 @@ body {
 }
 
 .music-btn {
-    background: #ff6b9d;
+    background: linear-gradient(45deg, #ff6b9d, #ffa3b8);
     color: white;
     border: none;
     width: 50px;
@@ -254,12 +344,66 @@ body {
     border-radius: 50%;
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .music-btn:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+}
+
+.music-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: 0.5s;
+}
+
+.music-btn:hover::after {
+    left: 100%;
+}
+
+.music-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Music playing indicator */
+.music-playing::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent, #ff6b9d, transparent 30%);
+    animation: rotateBorder 2s linear infinite;
+    z-index: -1;
+}
+
+@keyframes rotateBorder {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Pulse animation for playing music */
+.music-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 /* === Section Styling === */
@@ -341,11 +485,110 @@ body {
 }
 
 .flip-card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
     object-fit: cover;
     margin-bottom: 1rem;
+}
+
+/* Video Card Styles */
+.video-card {
+    perspective: 1000px;
+}
+
+.video-card-inner {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.video-card:hover .video-card-inner {
+    transform: rotateY(180deg);
+}
+
+.video-card-front, .video-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.video-card-front {
+    background: linear-gradient(135deg, #fff5f5, #f5f0ff);
+    color: #5a4a63;
+}
+
+.video-card-back {
+    background: linear-gradient(135deg, #ffebf3, #ffe0f0);
+    color: #ff6b9d;
+    transform: rotateY(180deg);
+}
+
+.video-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.video-best-moment {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+/* Video Play/Pause Overlay */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-overlay.show {
+    opacity: 1;
+}
+
+.video-overlay button {
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.video-overlay button:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 1);
 }
 
 /* === Gallery === */
@@ -674,6 +917,7 @@ body {
 .final-message p {
     font-size: 1.5rem;
     margin-bottom: 1rem;
+    color: white;
 }
 
 .final-message h2 {
@@ -720,6 +964,78 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* === Keyboard Hint Panel === */
+.keyboard-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10001;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
+    border: 1px solid rgba(255, 107, 157, 0.3);
+    max-width: 250px;
+    animation: slideInFromBottom 0.5s ease;
+}
+
+.hint-content h3 {
+    margin: 0 0 0.5rem 0;
+    color: #ff6b9d;
+    font-size: 1.1rem;
+}
+
+.hint-content p {
+    margin: 0.3rem 0;
+    font-size: 0.9rem;
+    color: #5a4a63;
+}
+
+kbd {
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.close-hint-btn {
+    background: linear-gradient(45deg, #ff6b9d, #ffa3b8);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    width: 100%;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.close-hint-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 107, 157, 0.4);
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.hidden-panel {
+    display: none !important;
 }
 
 .lightbox-content {

@@ -1,5 +1,6 @@
 // DOM Elements
 const heartsContainer = document.getElementById('heartsContainer');
+const floatingHeartsContainer = document.getElementById('floatingHearts');
 const surpriseBtn = document.getElementById('surpriseBtn');
 const autoMessage = document.getElementById('autoMessage');
 const musicToggle = document.getElementById('musicToggle');
@@ -91,7 +92,146 @@ document.addEventListener('DOMContentLoaded', function() {
     startPetals();
     setupScrollAnimations();
     startSurpriseIntervals();
+    enhancedCompliments();
+    setupVideoFunctionality();
+    
+    // Initialize music state
+    setTimeout(() => {
+        // Initialize music flags if not set
+        if (window.wasMusicPlaying === undefined) {
+            window.wasMusicPlaying = false;
+        }
+        
+        updateMusicButtonState(); // Ensure button reflects actual state
+        checkCurrentSection(); // Apply section-specific music rules
+    }, 1000); // Slight delay to ensure everything is loaded
 });
+
+// Setup video functionality
+function setupVideoFunctionality() {
+    // Get the best moments video element
+    const bestMomentVideo = document.getElementById('bestMomentVideo');
+    
+    if (bestMomentVideo) {
+        // Configure video properties
+        bestMomentVideo.loop = true;
+        bestMomentVideo.muted = true; // Start muted due to autoplay policies
+        
+        // Attempt to play the video when the section becomes visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Try to play the video with error handling
+                    bestMomentVideo.play().catch(error => {
+                        console.log('Autoplay prevented:', error);
+                        // If autoplay fails, show a message
+                        showTemporaryMessage("Video autoplay blocked. Click the video to play.");
+                    });
+                }
+            });
+        }, { threshold: 0.5 }); // Trigger when 50% of the element is visible
+        
+        // Observe the video element
+        observer.observe(bestMomentVideo.closest('.timeline-item'));
+        
+        // Add click to play functionality
+        bestMomentVideo.addEventListener('click', function() {
+            if (this.paused) {
+                this.play().catch(error => {
+                    console.log('Play error:', error);
+                });
+            } else {
+                this.pause();
+            }
+        });
+    }
+    
+    // Setup reel video functionality
+    const reelVideo = document.getElementById('reelVideo');
+    if (reelVideo) {
+        // Configure video properties
+        reelVideo.loop = true;
+        reelVideo.muted = true; // Start muted due to autoplay policies
+        
+        // Attempt to play when section becomes visible
+        const reelObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Only play if we're currently on the story section
+                    const storySection = sections.story;
+                    const storyVisible = !storySection.classList.contains('hidden');
+                    
+                    if (storyVisible) {
+                        // First, unmute the reel video since we want sound on the story page
+                        reelVideo.muted = false;
+                        
+                        reelVideo.play().then(() => {
+                            console.log('Reel video playing with sound via intersection');
+                        }).catch(error => {
+                            console.log('Reel autoplay prevented:', error);
+                            showTemporaryMessage("Reel autoplay blocked. Click the video to play.");
+                            // Try to play muted if sound fails
+                            reelVideo.muted = true;
+                            reelVideo.play().catch(error2 => {
+                                console.log('Could not play reel video even muted:', error2);
+                            });
+                        });
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        // Observe the reel video element
+        reelObserver.observe(reelVideo.closest('.timeline-item'));
+        
+        reelVideo.addEventListener('click', function() {
+            // Toggle mute state
+            this.muted = !this.muted;
+            
+            if (this.paused) {
+                this.play().catch(error => {
+                    console.log('Play error:', error);
+                });
+            } else {
+                this.pause();
+            }
+            
+            // Show a temporary message about mute/unmute
+            if (this.muted) {
+                showTemporaryMessage("Video muted 🔇");
+            } else {
+                showTemporaryMessage("Video unmuted 🔊");
+            }
+        });
+    }
+    
+    // Add error handling for videos
+    const allVideos = document.querySelectorAll('video');
+    allVideos.forEach(video => {
+        video.loop = true; // Enable looping for all videos
+        
+        // Handle video loading errors
+        video.addEventListener('error', function(e) {
+            console.error('Video failed to load:', e.target.src);
+            showTemporaryMessage("Video couldn't load. It may be unavailable.");
+        });
+        
+        // Only add the general click handler if it's not the reel video
+        if (video.id !== 'reelVideo') {
+            video.addEventListener('click', function() {
+                // Toggle mute state
+                this.muted = !this.muted;
+                
+                // Show a temporary message about mute/unmute
+                if (this.muted) {
+                    showTemporaryMessage("Video muted 🔇");
+                } else {
+                    showTemporaryMessage("Video unmuted 🔊");
+                }
+            });
+        }
+    });
+}
 
 // Initialize floating hearts animation
 function initFloatingHearts() {
@@ -102,6 +242,57 @@ function initFloatingHearts() {
     
     // Keep creating hearts periodically
     setInterval(createHeart, 800);
+    
+    // Start the new floating hearts
+    startFloatingHearts();
+}
+
+// Create romantic floating hearts in the background
+function createFloatingHeart() {
+    if (!floatingHeartsContainer) return;
+    
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    
+    // Random heart emoji
+    const hearts = ['❤️', '💖', '💕', '💘', '💝', '💗', '💓', '💞'];
+    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    
+    // Random position
+    const startPosition = Math.random() * 100;
+    heart.style.left = `${startPosition}%`;
+    
+    // Random size
+    const size = Math.random() * 20 + 10;
+    heart.style.fontSize = `${size}px`;
+    
+    // Random animation duration
+    const duration = Math.random() * 10 + 10;
+    heart.style.animationDuration = `${duration}s`;
+    
+    floatingHeartsContainer.appendChild(heart);
+    
+    // Remove after animation completes
+    setTimeout(() => {
+        if (heart.parentNode) {
+            heart.parentNode.removeChild(heart);
+        }
+    }, duration * 1000);
+}
+
+// Start creating floating hearts periodically
+function startFloatingHearts() {
+    if (!floatingHeartsContainer) return;
+    
+    // Create initial floating hearts
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            createFloatingHeart();
+        }, i * 500);
+    }
+    
+    // Continue creating floating hearts periodically
+    setInterval(createFloatingHeart, 800);
 }
 
 // Create floating petals
@@ -188,6 +379,93 @@ function startSurpriseIntervals() {
         ];
         showTemporaryMessage(hiddenSurprises[Math.floor(Math.random() * hiddenSurprises.length)]);
     }, Math.random() * 20000 + 20000); // 20-40 seconds
+    
+    // Romantic mood changes
+    setInterval(changeRomanticMood, 30000); // Every 30 seconds
+    
+    // Surprise confetti on special occasions
+    setInterval(checkForSpecialSurprises, 60000); // Every minute
+}
+
+// Change romantic mood periodically
+function changeRomanticMood() {
+    const moods = [
+        { bg: 'linear-gradient(135deg, #fff5f5, #f5f0ff)', color: '#ff6b9d' },
+        { bg: 'linear-gradient(135deg, #fdf2f8, #fce7f3)', color: '#ec4899' },
+        { bg: 'linear-gradient(135deg, #f0f9ff, #e0f2fe)', color: '#0ea5e9' },
+        { bg: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', color: '#22c55e' }
+    ];
+    
+    const mood = moods[Math.floor(Math.random() * moods.length)];
+    document.body.style.background = `${mood.bg}, ${mood.bg.replace('135deg', '45deg')}`;
+    
+    // Temporarily change accent color
+    const tempStyle = document.createElement('style');
+    tempStyle.textContent = `
+        .nav-link, .main-title, .subtitle, .cta-button {
+            color: ${mood.color} !important;
+        }
+    `;
+    document.head.appendChild(tempStyle);
+    
+    // Revert after delay
+    setTimeout(() => {
+        if (tempStyle.parentNode) {
+            tempStyle.parentNode.removeChild(tempStyle);
+        }
+    }, 5000);
+}
+
+// Check for special surprises
+function checkForSpecialSurprises() {
+    if (Math.random() > 0.7) { // 30% chance every minute
+        const now = new Date();
+        const hour = now.getHours();
+        
+        if (hour >= 21 || hour <= 5) { // Evening/night
+            createConfettiRain();
+            showTemporaryMessage("Stargazing time... You shine brighter than any star ✨");
+        } else if (hour >= 6 && hour <= 10) { // Morning
+            showTemporaryMessage("Good morning sunshine! ☀️");
+        } else if (hour >= 12 && hour <= 14) { // Lunch time
+            showTemporaryMessage("Hope your lunch is as delightful as you are!");
+        } else if (hour >= 17 && hour <= 19) { // Evening
+            showTemporaryMessage("Sunset time! But you're more beautiful than any sunset 🌅");
+        }
+    }
+}
+
+// Create confetti rain effect
+function createConfettiRain() {
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            createConfettiPiece();
+        }, i * 100);
+    }
+}
+
+// Enhanced compliment system
+function enhancedCompliments() {
+    const enhancedComplimentsList = [
+        "You're my favorite thought",
+        "You make my heart skip a beat",
+        "You're my sunshine on cloudy days",
+        "With you, I've found my home",
+        "You're my today and all of my tomorrows",
+        "You're the missing piece I didn't know I needed",
+        "You're my happy place",
+        "You make ordinary moments magical",
+        "You're my favorite hello and hardest goodbye",
+        "You're the best thing that ever happened to me"
+    ];
+    
+    // Show a random enhanced compliment every 2 minutes
+    setInterval(() => {
+        if (Math.random() > 0.5) { // 50% chance
+            const compliment = enhancedComplimentsList[Math.floor(Math.random() * enhancedComplimentsList.length)];
+            showTemporaryMessage(compliment);
+        }
+    }, 120000); // Every 2 minutes
 }
 
 // Create a single floating heart
@@ -223,11 +501,27 @@ function setupEventListeners() {
     // Landing page events
     surpriseBtn.addEventListener('click', goToNextSection);
     
-    // Music toggle - now starts on first interaction
+    // Music toggle button
+    musicToggle.addEventListener('click', toggleMusic);
+    
+    // Auto-start music on first interaction
     document.addEventListener('click', function enableMusic() {
         if (backgroundMusic.paused) {
-            backgroundMusic.play();
-            musicToggle.textContent = '🔊';
+            // Restore the saved playback position if we have one
+            if (window.savedMusicTime !== undefined) {
+                backgroundMusic.currentTime = window.savedMusicTime;
+            }
+            
+            backgroundMusic.play().then(() => {
+                window.wasMusicPlaying = true; // Update the flag
+                musicToggle.textContent = '🔊';
+                musicToggle.classList.add('music-playing', 'music-pulse');
+            }).catch(error => {
+                console.log('Autoplay prevented on first interaction:', error);
+                musicToggle.textContent = '🎵';
+                showTemporaryMessage("Browser blocked autoplay. Press 'M' key or click music button to start.");
+                window.wasMusicPlaying = false; // Update the flag
+            });
         }
         document.removeEventListener('click', enableMusic);
     });
@@ -372,6 +666,9 @@ function navigateToSection(sectionId) {
             link.classList.add('active');
         }
     });
+    
+    // Check and update music/video state based on current section
+    checkCurrentSection();
 }
 
 // Go to next section when clicking the surprise button
@@ -387,6 +684,9 @@ function goToNextSection() {
         }
     });
     
+    // Check and update music/video state based on current section
+    checkCurrentSection();
+    
     // Stop the landing page timers
     clearTimeout(autoMessageTimer);
     clearTimeout(buttonShakeTimer);
@@ -396,13 +696,181 @@ function goToNextSection() {
 // Toggle background music
 function toggleMusic() {
     if (backgroundMusic.paused) {
-        backgroundMusic.play();
-        musicToggle.textContent = '🔊';
+        // Restore the saved playback position if we have one
+        if (window.savedMusicTime !== undefined) {
+            backgroundMusic.currentTime = window.savedMusicTime;
+        }
+        
+        backgroundMusic.play().then(() => {
+            window.wasMusicPlaying = true; // Update the flag
+            musicToggle.textContent = '🔊';
+            musicToggle.classList.add('music-playing', 'music-pulse');
+            showTemporaryMessage("Music on! Let's dance 💃");
+        }).catch(error => {
+            console.log('Autoplay prevented:', error);
+            showTemporaryMessage("Browser blocked autoplay. Click anywhere to start music.");
+            // Update button state to reflect actual music state
+            musicToggle.textContent = '🎵';
+            musicToggle.classList.remove('music-playing', 'music-pulse');
+            window.wasMusicPlaying = false; // Update the flag
+        });
     } else {
+        // Save the current playback position before pausing
+        window.savedMusicTime = backgroundMusic.currentTime;
+        window.wasMusicPlaying = false; // Update the flag
+        
         backgroundMusic.pause();
         musicToggle.textContent = '🎵';
+        musicToggle.classList.remove('music-playing', 'music-pulse');
+        showTemporaryMessage("Music paused ⏸️");
     }
 }
+
+// Manage music based on current section
+function checkCurrentSection() {
+    const storySection = sections.story;
+    const reelVideo = document.getElementById('reelVideo');
+    
+    // Check if story section is currently visible
+    const storyVisible = !storySection.classList.contains('hidden');
+    
+    if (reelVideo) {
+        if (storyVisible) {
+            // If story section is visible, pause background music and play reel video
+            if (!backgroundMusic.paused) {
+                // Save the current playback position and state before pausing
+                window.savedMusicTime = backgroundMusic.currentTime;
+                window.wasMusicPlaying = true; // Remember that music was playing
+                backgroundMusic.pause();
+                updateMusicButtonState();
+            }
+            
+            // First, unmute the reel video since we want sound on the story page
+            reelVideo.muted = false;
+            
+            // Try to play reel video
+            reelVideo.play().then(() => {
+                console.log('Reel video playing with sound');
+            }).catch(error => {
+                console.log('Could not play reel video:', error);
+                // If we can't play with sound, try to play muted
+                reelVideo.muted = true;
+                reelVideo.play().catch(error2 => {
+                    console.log('Could not play reel video even muted:', error2);
+                });
+            });
+        } else {
+            // If story section is not visible, pause reel video and mute it
+            reelVideo.pause();
+            reelVideo.muted = true;
+        }
+    }
+    
+    // Always handle background music state appropriately
+    // If we're not on the story page, restore the music based on previous state
+    if (!storyVisible) {
+        // Small delay to ensure video is properly paused before resuming music
+        setTimeout(() => {
+            if (window.wasMusicPlaying) {  // If music was playing before
+                // Restore the saved playback position if we have one
+                if (window.savedMusicTime !== undefined) {
+                    backgroundMusic.currentTime = window.savedMusicTime;
+                }
+                
+                backgroundMusic.play().catch(error => {
+                    console.log('Could not resume background music:', error);
+                });
+                updateMusicButtonState();
+            }
+        }, 100);
+    }
+}
+
+// Override the navigateToSection function to handle music
+function navigateToSectionWithMusic(sectionId) {
+    // Hide all sections
+    Object.values(sections).forEach(section => {
+        section.classList.add('hidden');
+    });
+    
+    // Show target section
+    sections[sectionId].classList.remove('hidden');
+    
+    // Update active nav link
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-section') === sectionId) {
+            link.classList.add('active');
+        }
+    });
+    
+    // Check and update music/video state based on current section
+    checkCurrentSection();
+}
+
+// Update navigation links to use the new function
+const updateNavigation = () => {
+    navLinks.forEach(link => {
+        link.removeEventListener('click', navigateToSection); // Remove old listener
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetSection = e.target.getAttribute('data-section');
+            navigateToSectionWithMusic(targetSection);
+        });
+    });
+};
+
+// Call updateNavigation when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateNavigation);
+} else {
+    updateNavigation();
+}
+
+// Update music button visuals based on playback state
+function updateMusicButtonState() {
+    if (backgroundMusic && !backgroundMusic.paused) {
+        musicToggle.textContent = '🔊';
+        musicToggle.classList.add('music-playing', 'music-pulse');
+    } else {
+        musicToggle.textContent = '🎵';
+        musicToggle.classList.remove('music-playing', 'music-pulse');
+    }
+}
+
+// Listen for music state changes
+if (backgroundMusic) {
+    backgroundMusic.addEventListener('play', updateMusicButtonState);
+    backgroundMusic.addEventListener('pause', updateMusicButtonState);
+}
+
+// Initialize the music button state
+setTimeout(updateMusicButtonState, 500); // Small delay to ensure DOM is ready
+
+// Enhanced music controls with volume
+function setupMusicControls() {
+    // Set initial volume
+    if (backgroundMusic) {
+        backgroundMusic.volume = 0.3;
+        
+        // Handle music errors
+        backgroundMusic.addEventListener('error', function() {
+            console.log('Music file not found or failed to load');
+            musicToggle.textContent = '🔇';
+            musicToggle.disabled = true;
+            musicToggle.title = 'Music unavailable';
+        });
+        
+        // Handle music ended (loop should restart, but just in case)
+        backgroundMusic.addEventListener('ended', function() {
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.play();
+        });
+    }
+}
+
+// Initialize music controls
+setupMusicControls();
 
 // Handle mouse movement for hearts trail
 function handleMouseMove(e) {
@@ -486,6 +954,13 @@ function handleKeyDown(e) {
                 showTemporaryMessage("I know. And I always will.");
             }
             break;
+        case 'm':
+            if (!e.ctrlKey && !e.altKey && !e.metaKey) {
+                // Toggle music with M key
+                toggleMusic();
+                e.preventDefault(); // Prevent any default behavior
+            }
+            break;
         default:
             // Typing response
             if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
@@ -534,6 +1009,55 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
+
+// Create romantic effect for lightbox
+function createRomanticLightboxEffect() {
+    // Create floating hearts around the lightbox
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['❤️', '💕', '💖', '💘'][Math.floor(Math.random() * 4)];
+            heart.style.position = 'fixed';
+            heart.style.fontSize = `${Math.random() * 20 + 15}px`;
+            heart.style.zIndex = '10002';
+            heart.style.pointerEvents = 'none';
+            heart.style.opacity = '0';
+            
+            // Position around the edges of the screen
+            const positions = [
+                {left: `${Math.random() * 20}%`, top: '0'},
+                {left: `${Math.random() * 20}%`, top: '100vh'},
+                {left: '0', top: `${Math.random() * 20}%`},
+                {left: '100vw', top: `${Math.random() * 20}%`}
+            ];
+            
+            const pos = positions[Math.floor(Math.random() * positions.length)];
+            heart.style.left = pos.left;
+            heart.style.top = pos.top;
+            
+            document.body.appendChild(heart);
+            
+            // Animate to center
+            setTimeout(() => {
+                heart.style.transition = 'all 1.5s ease-in-out';
+                heart.style.opacity = '0.8';
+                
+                // Move toward center
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                heart.style.left = `${centerX}px`;
+                heart.style.top = `${centerY}px`;
+            }, 10);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.parentNode.removeChild(heart);
+                }
+            }, 2000);
+        }, i * 200);
+    }
+}
 
 // Handle mouse hover for compliments
 function handleMouseOver(e) {
@@ -608,12 +1132,19 @@ function handleMouseOver(e) {
                     lightbox.classList.remove('hidden');
                     document.body.style.overflow = 'hidden'; // Prevent scrolling
                     
+                    // Add romantic surprise effect
+                    createRomanticLightboxEffect();
+                    
                     // Add random emotional caption
                     const randomEmotionalCaptions = [
                         "You mean the world to me",
                         "I'm grateful for moments like these",
                         "This memory is precious to me",
-                        "You make everything better"
+                        "You make everything better",
+                        "Every moment with you is treasured",
+                        "These memories warm my heart",
+                        "You're the best part of my day",
+                        "I fall in love with you all over again looking at this"
                     ];
                     
                     const randomCaption = randomEmotionalCaptions[Math.floor(Math.random() * randomEmotionalCaptions.length)];
@@ -621,6 +1152,39 @@ function handleMouseOver(e) {
                 });
             }
         }
+    }
+    
+    // Add romantic surprise when hovering over gallery items
+    if (e.target.closest('.polaroid')) {
+        const polaroid = e.target.closest('.polaroid');
+        
+        // Create subtle romantic effect on hover
+        const effect = document.createElement('div');
+        effect.innerHTML = ['💕', '💖', '💞'][Math.floor(Math.random() * 3)];
+        effect.style.position = 'absolute';
+        effect.style.left = `${Math.random() * 100}%`;
+        effect.style.top = `${Math.random() * 100}%`;
+        effect.style.fontSize = '1.5rem';
+        effect.style.opacity = '0.7';
+        effect.style.pointerEvents = 'none';
+        effect.style.transition = 'all 1s ease';
+        effect.style.zIndex = '999';
+        
+        polaroid.style.position = 'relative';
+        polaroid.appendChild(effect);
+        
+        // Fade out after delay
+        setTimeout(() => {
+            if (effect.parentNode) {
+                effect.style.opacity = '0';
+                effect.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    if (effect.parentNode) {
+                        effect.parentNode.removeChild(effect);
+                    }
+                }, 1000);
+            }
+        }, 1000);
     }
 }
 
@@ -1113,5 +1677,40 @@ function createConfettiPiece() {
     }, 3000);
 }
 
+// Setup keyboard hint panel
+function setupKeyboardHint() {
+    const hintPanel = document.getElementById('keyboardHint');
+    const closeBtn = document.getElementById('closeHint');
+    
+    // Show hint initially for first-time visitors
+    const hasSeenHint = localStorage.getItem('hasSeenKeyboardHint');
+    if (!hasSeenHint) {
+        setTimeout(() => {
+            hintPanel.classList.remove('hidden-panel');
+        }, 5000); // Show after 5 seconds
+        
+        // Mark as seen after 30 seconds or when closed
+        setTimeout(() => {
+            localStorage.setItem('hasSeenKeyboardHint', 'true');
+        }, 30000);
+    }
+    
+    // Close button functionality
+    closeBtn.addEventListener('click', () => {
+        hintPanel.classList.add('hidden-panel');
+        localStorage.setItem('hasSeenKeyboardHint', 'true');
+    });
+    
+    // Auto-hide after 30 seconds if not closed
+    setTimeout(() => {
+        if (!localStorage.getItem('hasSeenKeyboardHint')) {
+            hintPanel.classList.add('hidden-panel');
+        }
+    }, 30000);
+}
+
 // Call the lightbox setup function when the page loads
 setupLightboxClose();
+
+// Setup keyboard hint panel
+setupKeyboardHint();
