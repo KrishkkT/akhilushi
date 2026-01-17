@@ -1,0 +1,28 @@
+{
+  "name": "for-my-love",
+  "version": "1.0.0",
+  "description": "A romantic website for someone special ❤️",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve .",
+    "build": "echo 'Build completed'",
+    "vercel-build": "echo 'Vercel build completed'"
+  },
+  "keywords": [
+    "romantic",
+    "website",
+    "love",
+    "valentine",
+    "special",
+    "frontend"
+  ],
+  "author": "Akhil Aayushi",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
