@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love ❤️</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">💖</div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#landing" class="nav-link" data-section="landing">Home</a></li>
+                <li class="nav-item"><a href="#story" class="nav-link" data-section="story">Our Story</a></li>
+                <li class="nav-item"><a href="#gallery" class="nav-link" data-section="gallery">Gallery</a></li>
+                <li class="nav-item"><a href="#funny" class="nav-link" data-section="funny">Fun</a></li>
+                <li class="nav-item"><a href="#letters" class="nav-link" data-section="letters">Letters</a></li>
+                <li class="nav-item"><a href="#future" class="nav-link" data-section="future">Future</a></li>
+                <li class="nav-item"><a href="#ending" class="nav-link" data-section="ending">End</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Landing Page -->
+    <section id="landing" class="section landing">
+        <div class="container">
+            <div class="hearts-container" id="heartsContainer"></div>
+            <div class="text-content">
+                <h1 class="main-title">Hi Love ❤️</h1>
+                <p class="subtitle">I know you're already impressed...<br>but let me try once more.</p>
+                <button id="surpriseBtn" class="cta-button">Click if you love surprises</button>
+                <p id="autoMessage" class="auto-message hidden">I know you're smiling already 😌</p>
+            </div>
+        </div>
+        
+        <!-- Background music player -->
+        <div class="music-player">
+            <button id="musicToggle" class="music-btn">🎵</button>
+            <audio id="backgroundMusic" loop>
+                <source src="public/music/background.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="section story hidden">
+        <div class="container">
+            <h2>Our Story 🫶</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="card flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>🫶 The First Message</h3>
+                                <img src="public/photos/bg1.png" alt="First Message">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>I still have that first message saved... 😊</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="card flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>☕ First Meet</h3>
+                                <img src="public/photos/bg2.jpg" alt="First Meet">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>The moment I knew I was in trouble... ❤️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="card flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>😂 Our Funniest Moment</h3>
+                                <img src="public/photos/bg3.jpg" alt="Funny Moment">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>We laughed until our stomachs hurt... 😭❤️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="card flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h3>💞 The Moment I Knew</h3>
+                                <img src="public/photos/bg4.jpg" alt="Magic Moment">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>This is when I realized I'm never winning arguments again 😭❤️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Gallery -->
+    <section id="gallery" class="section gallery hidden">
+        <div class="container">
+            <h2>Memory Gallery 📸</h2>
+            <div class="gallery-grid">
+                <div class="polaroid">
+                    <img src="public/photos/bg5.jpg" alt="Memory" data-caption="You don't know this, but I stared at this photo for 10 minutes.">
+                    <p class="caption">My favorite smile</p>
+                </div>
+                <div class="polaroid">
+                    <img src="public/photos/bg6.jpg" alt="Memory" data-caption="This is when I knew you were special.">
+                    <p class="caption">Proof that angels exist</p>
+                </div>
+                <div class="polaroid">
+                    <img src="public/photos/bg7.jpg" alt="Memory" data-caption="I could look at this forever.">
+                    <p class="caption">How can one person be this cute??</p>
+                </div>
+                <div class="polaroid">
+                    <img src="public/photos/bg8.jpg" alt="Memory" data-caption="This is when I fell for you a little more.">
+                    <p class="caption">You don't know this, but I stared at this photo for 10 minutes</p>
+                </div>
+                <div class="polaroid">
+                    <img src="public/photos/bg9.jpg" alt="Memory" data-caption="Your smile brightens my world.">
+                    <p class="caption">Pure happiness</p>
+                </div>
+                <div class="polaroid">
+                    <img src="public/photos/bg10.jpg" alt="Memory" data-caption="Moments like these make life beautiful.">
+                    <p class="caption">Perfect moments</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Funny Section -->
+    <section id="funny" class="section funny hidden">
+        <div class="container">
+            <h2>Funny Section 😂</h2>
+            
+            <div class="simulator">
+                <h3>Girlfriend Simulator 😂</h3>
+                <div class="simulator-buttons">
+                    <button class="simulator-btn">Make her smile</button>
+                    <button class="simulator-btn">Make her angry</button>
+                    <button class="simulator-btn">Say something dumb</button>
+                </div>
+                <div id="simulatorOutput" class="simulator-output"></div>
+            </div>
+            
+            <div class="reasons">
+                <h3>Reasons Why I Love You</h3>
+                <ul id="reasonList">
+                    <li>Because you care</li>
+                    <li>Because you're strong</li>
+                    <li>Because you steal food from my plate</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Letters Section -->
+    <section id="letters" class="section letters hidden">
+        <div class="container">
+            <h2>Letters I Never Said Out Loud 💌</h2>
+            <div class="envelope-container">
+                <div class="envelope" id="letterEnvelope">
+                    <div class="envelope-front">
+                        <span>Open this letter...</span>
+                    </div>
+                </div>
+            </div>
+            <div id="letterContent" class="letter-content hidden">
+                <p>"Things I'm scared to say"</p>
+                <p>"What you mean to me"</p>
+                <p>"What I promise you"</p>
+                <p class="closing">I don't need perfection. I just need you.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Page -->
+    <section id="future" class="section future hidden">
+        <div class="container">
+            <h2>Future Page 🔮</h2>
+            <div class="future-content">
+                <h3>Where I see us in 1 year</h3>
+                <p>Still laughing together, still growing together, still choosing each other every day.</p>
+                
+                <h3>5 things I want to do with you</h3>
+                <ol>
+                    <li>Travel to places we've never been</li>
+                    <li>Build a home together</li>
+                    <li>Create countless memories</li>
+                    <li>Face challenges hand in hand</li>
+                    <li>Grow old together</li>
+                </ol>
+                
+                <p>One day, I’ll show you this website and smile again.</p>
+                                
+                <div class="countdown">
+                    <h3>Days since we met: <span id="daysCounter">0</span></h3>
+                </div>
+                                
+                <!-- Secret Proposal Button -->
+                <div class="proposal-trigger">
+                    <button id="proposalTrigger" class="proposal-btn">💍</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Surprise Ending -->
+    <section id="ending" class="section ending hidden">
+        <div class="container">
+            <button id="lastThingBtn" class="last-thing-btn">One Last Thing</button>
+            <div id="finalMessage" class="final-message hidden">
+                <p>No website can show how much I love you...</p>
+                <p>but I tried.</p>
+                <h2 id="herName">Your Name Here</h2>
+                <p>Thank you for being mine.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compliment popup that appears on hover -->
+    <div id="complimentPopup" class="compliment-popup hidden"></div>
+
+    <!-- Click effect container -->
+    <div id="clickEffectContainer" class="click-effect-container"></div>
+    
+    <!-- Secret Proposal Page -->
+    <section id="proposal" class="section proposal hidden">
+        <div class="container">
+            <div class="proposal-content">
+                <h2>Will You Marry Me? 💍</h2>
+                <p>Someday I hope to ask you this in person...</p>
+                <div class="ring-animation"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Lightbox for gallery -->
+    <div id="lightbox" class="lightbox hidden">
+        <div class="lightbox-content">
+            <span class="close-lightbox">&times;</span>
+            <img id="lightbox-img" src="public/photos/bg11.jpg" alt="Enlarged photo">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="advanced-features.js"></script>
+</body>
+</html>

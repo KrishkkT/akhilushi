@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Placeholder Images</title>
+</head>
+<body>
+    <h1>Placeholder Image Generator</h1>
+    <p>This page generates placeholder images for the romantic website. In a real scenario, you would save these as actual image files.</p>
+    
+    <script>
+        // Function to create a simple colored image with text
+        function createPlaceholderImage(text, bgColor = '#ffcce6', textColor = '#ff6b9d') {
+            const canvas = document.createElement('canvas');
+            canvas.width = 400;
+            canvas.height = 400;
+            const ctx = canvas.getContext('2d');
+            
+            // Fill background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw text
+            ctx.font = '20px Arial';
+            ctx.fillStyle = textColor;
+            ctx.textAlign = 'center';
+            ctx.fillText(text, canvas.width/2, canvas.height/2);
+            
+            return canvas.toDataURL('image/png');
+        }
+        
+        // Create various placeholder images
+        const images = [
+            { name: 'bg1.jpg', text: 'First Message', bg: '#ffcce6' },
+            { name: 'bg2.jpg', text: 'First Meet', bg: '#e6f0ff' },
+            { name: 'bg3.jpg', text: 'Funny Moment', bg: '#e6ffe6' },
+            { name: 'bg4.jpg', text: 'Magic Moment', bg: '#fff2e6' },
+            { name: 'bg5.jpg', text: 'Photo 1 - Favorite Smile', bg: '#ffe6f0' },
+            { name: 'bg6.jpg', text: 'Photo 2 - Angel Proof', bg: '#f0e6ff' },
+            { name: 'bg7.jpg', text: 'Photo 3 - So Cute!', bg: '#e6fff2' },
+            { name: 'bg8.jpg', text: 'Photo 4 - Stared 10 Min', bg: '#ffffe6' },
+            { name: 'bg9.jpg', text: 'Photo 5 - Pure Happiness', bg: '#ffe6e6' },
+            { name: 'bg10.jpg', text: 'Photo 6 - Perfect Moments', bg: '#f0ffe6' },
+            { name: 'bg11.jpg', text: 'Photo 7 - Perfect Moments', bg: '#f0ffe6' }
+        ];
+        
+        // Display the images
+        images.forEach(imgData => {
+            const img = document.createElement('img');
+            img.src = createPlaceholderImage(imgData.text, imgData.bg);
+            img.alt = imgData.name;
+            img.title = imgData.name;
+            img.style.width = '200px';
+            img.style.height = '200px';
+            img.style.margin = '10px';
+            img.style.border = '2px solid #ff6b9d';
+            img.style.borderRadius = '10px';
+            
+            const div = document.createElement('div');
+            div.appendChild(img);
+            div.appendChild(document.createElement('p')).textContent = imgData.name;
+            
+            document.body.appendChild(div);
+        });
+        
+        console.log('Placeholder images generated. In a real scenario, you would save these to the public/photos folder.');
+    </script>
+</body>
+</html>
