@@ -574,17 +574,27 @@ function setupEventListeners() {
         });
     });
     
-    // Letter envelope click with animated opening
+    // Letter envelope click with animated opening and magical effects
     letterEnvelope.addEventListener('click', () => {
-        // Animate envelope wiggle
-        letterEnvelope.style.animation = 'buttonShake 0.5s ease';
+        // Create magical sparkles
+        createMagicalSparkles();
+        
+        // Animate envelope opening
+        letterEnvelope.style.animation = 'envelopeOpen 1s ease forwards';
+        
         setTimeout(() => {
-            letterContent.classList.remove('hidden');
             letterEnvelope.classList.add('hidden');
+            letterContent.classList.remove('hidden');
             
-            // Reveal letter text line by line
+            // Add entrance animation
+            letterContent.style.animation = 'letterReveal 1s ease forwards';
+            
+            // Reveal letter text with romantic effects
             revealLetterText();
-        }, 500);
+            
+            // Create floating hearts around the letter
+            createLetterHearts();
+        }, 800);
     });
     
     // Last thing button
@@ -976,19 +986,41 @@ function handleKeyDown(e) {
 function showTemporaryMessage(text) {
     const messageDiv = document.createElement('div');
     messageDiv.textContent = text;
+    
+    // Position randomly on left or right side
+    const isLeftSide = Math.random() > 0.5;
+    const verticalPosition = 20 + Math.random() * 60; // 20-80% from top
+    
     messageDiv.style.position = 'fixed';
-    messageDiv.style.top = '50%';
-    messageDiv.style.left = '50%';
-    messageDiv.style.transform = 'translate(-50%, -50%)';
-    messageDiv.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-    messageDiv.style.padding = '1rem 2rem';
-    messageDiv.style.borderRadius = '10px';
-    messageDiv.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+    messageDiv.style.top = `${verticalPosition}%`;
+    messageDiv.style.transform = 'translateY(-50%)';;
+    
+    if (isLeftSide) {
+        messageDiv.style.left = '30px';
+        messageDiv.style.right = 'auto';
+        messageDiv.style.animation = 'slideInFromLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), fadeOutSide 0.5s ease 2.8s forwards';
+    } else {
+        messageDiv.style.right = '30px';
+        messageDiv.style.left = 'auto';
+        messageDiv.style.animation = 'slideInFromRight 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), fadeOutSide 0.5s ease 2.8s forwards';
+    }
+    
+    messageDiv.style.backgroundColor = 'linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 245, 247, 0.95))';
+    messageDiv.style.padding = '1.2rem 2rem';
+    messageDiv.style.borderRadius = '25px';
+    messageDiv.style.boxShadow = 
+        '0 10px 30px rgba(255, 107, 157, 0.25), '
+        + '0 5px 15px rgba(0, 0, 0, 0.1), '
+        + 'inset 0 2px 5px rgba(255, 255, 255, 0.5)';
     messageDiv.style.zIndex = '10000';
     messageDiv.style.fontStyle = 'italic';
     messageDiv.style.color = '#ff6b9d';
     messageDiv.style.pointerEvents = 'none';
-    messageDiv.style.animation = 'fadeIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards';
+    messageDiv.style.maxWidth = '280px';
+    messageDiv.style.textAlign = 'center';
+    messageDiv.style.backdropFilter = 'blur(15px)';
+    messageDiv.style.border = '2px solid rgba(255, 107, 157, 0.15)';
+    messageDiv.style.fontSize = '1.05rem';
     
     document.body.appendChild(messageDiv);
     
@@ -997,7 +1029,7 @@ function showTemporaryMessage(text) {
         if (messageDiv.parentNode) {
             messageDiv.parentNode.removeChild(messageDiv);
         }
-    }, 3000);
+    }, 3300);
 }
 
 // Add fadeOut animation dynamically
@@ -1006,6 +1038,49 @@ style.innerHTML = `
     @keyframes fadeOut {
         from { opacity: 1; }
         to { opacity: 0; }
+    }
+    
+    @keyframes slideInFromLeft {
+        0% { 
+            transform: translateX(-100%) translateY(-50%);
+            opacity: 0;
+            filter: blur(5px);
+        }
+        70% {
+            filter: blur(1px);
+        }
+        100% { 
+            transform: translateX(0) translateY(-50%);
+            opacity: 1;
+            filter: blur(0);
+        }
+    }
+    
+    @keyframes slideInFromRight {
+        0% { 
+            transform: translateX(100%) translateY(-50%);
+            opacity: 0;
+            filter: blur(5px);
+        }
+        70% {
+            filter: blur(1px);
+        }
+        100% { 
+            transform: translateX(0) translateY(-50%);
+            opacity: 1;
+            filter: blur(0);
+        }
+    }
+    
+    @keyframes fadeOutSide {
+        0% { 
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+        }
+        100% { 
+            opacity: 0;
+            transform: translateY(-50%) scale(0.8);
+        }
     }
 `;
 document.head.appendChild(style);
@@ -1191,7 +1266,7 @@ function handleMouseOver(e) {
 // Update days counter since we met
 function updateDaysCounter() {
     // For now, using a fixed date - you can change this to your actual date
-    const meetDate = new Date('2023-01-01'); // Change this to your actual date
+    const meetDate = new Date('2026-01-02'); // Change this to your actual date
     const today = new Date();
     const diffTime = Math.abs(today - meetDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -1290,32 +1365,51 @@ window.addEventListener('load', () => {
     }, 60000); // Every minute
 });
 
-// Reveal letter text line by line
+// Reveal letter text with magical effects
 function revealLetterText() {
+    const letterBody = document.getElementById('letterBody');
     const letterLines = [
-        "Things I'm scared to say",
-        "What you mean to me",
-        "What I promise you",
-        "I don't need perfection. I just need you.",
+        "My dearest Aayushi,",
+        "Every moment with you feels like magic.",
+        "Your smile lights up my darkest days,",
+        "and your laugh is my favorite melody.",
+        "",
+        "I never believed in love at first sight,",
+        "until I saw you.",
+        "You are my today, my tomorrow, my forever.",
+        "",
+        "Things I'm scared to say:",
+        "I love you more than words can express.",
+        "You mean everything to me.",
+        "I promise to cherish you always.",
+        "",
+        "I don't need perfection.",
+        "I just need you.",
+        "Forever and always.",
         "<span class='blinking-cursor'>|</span>"
     ];
     
-    const letterContentEl = document.getElementById('letterContent');
-    letterContentEl.innerHTML = ''; // Clear existing content
+    letterBody.innerHTML = ''; // Clear existing content
     
     letterLines.forEach((line, index) => {
         const p = document.createElement('p');
         p.innerHTML = line;
         p.style.opacity = '0';
         p.style.transform = 'translateY(20px)';
-        letterContentEl.appendChild(p);
+        p.style.transition = 'all 0.8s ease';
+        letterBody.appendChild(p);
         
-        // Schedule appearance
+        // Schedule appearance with magical effects
         setTimeout(() => {
-            p.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             p.style.opacity = '1';
             p.style.transform = 'translateY(0)';
-        }, index * 800); // Delay each line
+            p.style.color = '#ff6b9d'; // Romantic pink color
+            
+            // Add sparkle effect
+            if (line.trim() !== '' && !line.includes('cursor')) {
+                createLineSparkles(p);
+            }
+        }, index * 600); // Faster reveal
     });
     
     // Add blinking cursor
@@ -1323,10 +1417,164 @@ function revealLetterText() {
     style.textContent = `
         .blinking-cursor {
             animation: blink 1s infinite;
+            color: #ff6b9d;
         }
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Create magical sparkles
+function createMagicalSparkles() {
+    const container = document.querySelector('.letters .container');
+    
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = ['✨', '💫', '🌟', '💖', '💕'][Math.floor(Math.random() * 5)];
+            sparkle.style.position = 'absolute';
+            sparkle.style.left = `${Math.random() * 100}%`;
+            sparkle.style.top = `${Math.random() * 100}%`;
+            sparkle.style.fontSize = `${Math.random() * 20 + 15}px`;
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '9999';
+            sparkle.style.animation = `sparkleFloat ${Math.random() * 2 + 2}s ease-out forwards`;
+            sparkle.style.opacity = '0';
+            
+            container.appendChild(sparkle);
+            
+            // Fade in
+            setTimeout(() => {
+                sparkle.style.opacity = '1';
+            }, 50);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.parentNode.removeChild(sparkle);
+                }
+            }, 3000);
+        }, i * 100);
+    }
+    
+    // Add CSS for sparkle animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes sparkleFloat {
+            0% { 
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Create floating hearts around the letter
+function createLetterHearts() {
+    const letterSection = document.getElementById('letters');
+    
+    for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['❤️', '💖', '💕', '💗', '💓'][Math.floor(Math.random() * 5)];
+            heart.style.position = 'absolute';
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.top = `${Math.random() * 100}%`;
+            heart.style.fontSize = `${Math.random() * 25 + 15}px`;
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9998';
+            heart.style.animation = `heartFloat ${Math.random() * 3 + 4}s ease-out forwards`;
+            heart.style.opacity = '0';
+            
+            letterSection.appendChild(heart);
+            
+            // Fade in
+            setTimeout(() => {
+                heart.style.opacity = '0.7';
+            }, 50);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.parentNode.removeChild(heart);
+                }
+            }, 6000);
+        }, i * 200);
+    }
+    
+    // Add CSS for heart animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes heartFloat {
+            0% { 
+                transform: translateY(50px) scale(0);
+                opacity: 0;
+            }
+            20% { 
+                transform: translateY(0) scale(1);
+                opacity: 0.7;
+            }
+            80% { 
+                transform: translateY(-30px) scale(1);
+                opacity: 0.7;
+            }
+            100% { 
+                transform: translateY(-50px) scale(0);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Create sparkles for each line
+function createLineSparkles(element) {
+    const rect = element.getBoundingClientRect();
+    const container = document.querySelector('.letters .container');
+    
+    for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.position = 'absolute';
+            sparkle.style.left = `${rect.left + Math.random() * rect.width}px`;
+            sparkle.style.top = `${rect.top + rect.height/2}px`;
+            sparkle.style.fontSize = '15px';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '9999';
+            sparkle.style.animation = 'lineSparkle 1s ease-out forwards';
+            
+            container.appendChild(sparkle);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.parentNode.removeChild(sparkle);
+                }
+            }, 1000);
+        }, i * 200);
+    }
+    
+    // Add CSS for line sparkle animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes lineSparkle {
+            0% { 
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0;
+            }
         }
     `;
     document.head.appendChild(style);
@@ -1498,6 +1746,19 @@ function createShootingStar(parent) {
     }, 1000);
 }
 
+// Show simple effects when on future page
+function showFutureMagic() {
+    // Simple background enhancement
+    const futureSection = document.getElementById('future');
+    futureSection.style.background = 'linear-gradient(135deg, #5a67d8, #805ad5)';
+}
+
+// Hide effects when leaving future page
+function hideFutureMagic() {
+    const futureSection = document.getElementById('future');
+    futureSection.style.background = '';
+}
+
 // Show night sky when on future page
 function showNightSky() {
     const sky = document.getElementById('night-sky');
@@ -1579,12 +1840,12 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 if (entry.target.id === 'future') {
-                    showNightSky();
+                    showFutureMagic();
                     addStarEffects();
                 }
             } else {
                 if (entry.target.id === 'future') {
-                    hideNightSky();
+                    hideFutureMagic();
                 }
             }
         });
